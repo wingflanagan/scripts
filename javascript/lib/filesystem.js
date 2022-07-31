@@ -1,6 +1,6 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import * as yazl from 'yazl';
+var fs = require("fs");
+var path = require("path");
+var yazl = require("yazl");
 
 /********************************************************************************
  * Returns a list of files from an input list, that are older than a certain 
@@ -23,7 +23,7 @@ function getFilesOlderThan(fileList, olderThanDate) {
     var fileStat = fs.statSync(fileList[i]);
 
     if (fileStat.isFile() && fileStat.birthtime < olderThanDate) {
-      result.push(fileList);
+      result.push(fileList[i]);
     }
   }
 
@@ -38,7 +38,7 @@ function getFilesOlderThan(fileList, olderThanDate) {
  * the folder.
  * 
  * @param   {string}  folder  the folder in which to look for files and folders
- * @returns {string}          list of files and folders in the specified folder
+ * @returns {string[]}        list of files and folders in the specified folder
  ********************************************************************************/
 function getFiles(folder) {
   var result = [];
@@ -96,11 +96,11 @@ function deleteFiles(fileList, includFolders = false) {
  * @param {string[]}  fileList    Files to archive
  ********************************************************************************/
 function archiveFiles(zipFileName, fileList) {
-  var zipFile = new ZipFile();
+  var zipFile = new yazl.ZipFile();
 
   for (var i = 0; i < fileList.length; i++) {
     var fileName = fileList[i];
-    var fileBaseName = path.basename(fileName)[0];
+    var fileBaseName = path.basename(fileName);
     zipFile.addFile(fileName, fileBaseName);
   }
   
@@ -112,70 +112,8 @@ function archiveFiles(zipFileName, fileList) {
 
 }
 
-/********************************************************************************
- * Pads an integer as a string with leading zeros.
- * 
- * @param   {int}   num   the number to pad with leading zeros
- * @param   {int}   size  the desired total length of the return string
- * @returns {string}      a string represent the input as a string padded with 
- *                        leading zeros
- ********************************************************************************/
-function addLeadingZeros(num, size) {
-  num = num.toString();
-  while (num.length < size) num = "0" + num;
-  return num;
-}
-
-
-/********************************************************************************
- * Main portion of the script - cleans files and folders unique to my setup, 
- * including archiving last month's log files and deleting them from the work-log 
- * folder to keep it nice and clean.
- * ******************************************************************************/
-
-// places to go and things to see...
-//var userFolder = process.env["USERPROFILE"];
-var userFolder = "c:\\Users\\jflana";
-var oneDriveFolder = path.join(userFolder, "\\OneDrive - UW");
-var workLogFolder = path.join(oneDriveFolder, "\\work-log\\");
-var archiveFolder = path.join(workLogFolder, "archive\\");
-var obsidianTrashFolder = path.join(workLogFolder, "\\.trash");
-var workAttachmentsFolder = path.join(workLogFolder, "\\attachments");
-var downloads = path.join(userFolder, "\\Downloads");
-var shareXBase = path.join(oneDriveFolder, "\\Documents\\ShareX");
-var shareXCache = path.join(shareXBase, "\\Screenshots");
-var shareXLogs = path.join(shareXBase, "\\Logs");
-var shareXBackup = path.join(shareXBase, "\\Backup");
-var temp = process.env["TEMP"];
-var tmp = process.env["TMP"];
-
-// get the first day of the current month as a date
-var currentDate = new Date();
-var currentYear = currentDate.getFullYear();
-var currentMonth = currentDate.getMonth();
-var olderThanDate = new Date(currentYear, currentMonth, 1);
-
-// get the files in work log older than the start of this month and archive them
-var files = getFiles(workLogFolder);
-files = getFilesOlderThan(files, olderThanDate);
-var workfolderArchive = "work-log_" + currentYear + "_" + addLeadingZeros(currentMonth, 2) + ".zip";
-archiveFiles(workfolderArchive, files);
-
-// get the files in work attachments older than the start of this month and archive them
-var files = getFilesOlderThan(getFiles(workAttachmentsFolder), olderThanDate);
-var workAttachmentFolderArchive = "work-attachments_" + currentYear + "_" + addLeadingZeros(currentMonth, 2) + ".zip";
-workAttachmentFolderArchive = path.join(archiveFolder, workAttachmentFolderArchive);
-archiveFiles(workAttachmentFolderArchive, files);
-
-// kill temp folders
-deleteFiles(getFiles(temp), true);
-deleteFiles(getFiles(tmp), true);
-deleteFiles(getFiles(downloads), true);
-
-// empty Obsidian trash
-deleteFiles(getFiles(obsidianTrashFolder), true);
-
-// delete ShareX cruft
-deleteFiles(getFiles(shareXCache), true);
-deleteFiles(getFiles(shareXLogs), true);
-deleteFiles(getFiles(shareXBackup), true);
+// exports
+module.exports.getFilesOlderThan = getFilesOlderThan;
+module.exports.getFiles = getFiles;
+module.exports.deleteFiles = deleteFiles;
+module.exports.archiveFiles = archiveFiles;
