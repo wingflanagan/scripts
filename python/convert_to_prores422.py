@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from fileinput import filename
 import os
 import sys;
 
@@ -48,5 +49,10 @@ if __name__ == '__main__':
 
     for fileName in fileList:
         # strip the newline character, if there is one
+        if (fileName.startswith("#")):
+            continue;
         fileName = fileName.strip();
-        convertToProres(fileName, outputFolder);
+        if (os.path.exists(fileName)):
+            convertToProres(fileName, outputFolder);
+        else:
+            print(fileName + " does not exist. Moving on...");
