@@ -8,20 +8,34 @@ var path = require("path");
  * folder to keep it nice and clean.
  * ******************************************************************************/
 
-// places to go and things to see...
-var userFolder = "c:\\Users\\jflana";
-var oneDriveFolder = path.join(userFolder, "\\OneDrive - UW");
-var workLogFolder = path.join(oneDriveFolder, "\\work-log\\");
-var archiveFolder = path.join(workLogFolder, "archive\\");
-var obsidianTrashFolder = path.join(workLogFolder, "\\.trash");
-var workAttachmentsFolder = path.join(workLogFolder, "\\attachments");
-var downloads = path.join(userFolder, "\\Downloads");
-var shareXBase = path.join(oneDriveFolder, "\\Documents\\ShareX");
-var shareXCache = path.join(shareXBase, "\\Screenshots");
-var shareXLogs = path.join(shareXBase, "\\Logs");
-var shareXBackup = path.join(shareXBase, "\\Backup");
-var temp = process.env["TEMP"];
-var tmp = process.env["TMP"];
+var isWin = process.platform === "win32";
+var isLinux = process.platform === "linux";
+
+if (isWin) {
+    // places to go and things to see - WINDOZE...
+    var userFolder = "c:\\Users\\jflana";
+    var oneDriveFolder = path.join(userFolder, "\\OneDrive - UW");
+    var workLogFolder = path.join(oneDriveFolder, "\\work-log\\");
+    var archiveFolder = path.join(workLogFolder, "archive\\");
+    var obsidianTrashFolder = path.join(workLogFolder, "\\.trash");
+    var workAttachmentsFolder = path.join(workLogFolder, "\\attachments");
+    var downloads = path.join(userFolder, "\\Downloads");
+    var shareXBase = path.join(oneDriveFolder, "\\Documents\\ShareX");
+    var shareXCache = path.join(shareXBase, "\\Screenshots");
+    var shareXLogs = path.join(shareXBase, "\\Logs");
+    var shareXBackup = path.join(shareXBase, "\\Backup");
+    var temp = process.env["TEMP"];
+    var tmp = process.env["TMP"];
+} else if (isLinux) {
+    // Linux...
+    var userFolder = "/home/jflana";
+    var oneDriveFolder = path.join(userFolder, "/OneDriveUW");
+    var workLogFolder = path.join(oneDriveFolder, "/work-log");
+    var archiveFolder = path.join(workLogFolder, "/archive");
+    var obsidianTrashFolder = path.join(workLogFolder, "/.trash");
+    var workAttachmentsFolder = path.join(workLogFolder, "/attachments");
+    var downloads = path.join(userFolder, "/Downloads");
+}
 
 // get the first day of the current month as a date
 var currentDate = new Date();
@@ -42,15 +56,17 @@ var workAttachmentFolderArchive = "work-att_" + currentYear + "_" + util.addLead
 workAttachmentFolderArchive = path.join(archiveFolder, workAttachmentFolderArchive);
 fileSystem.archiveFiles(workAttachmentFolderArchive, files);
 
-// kill temp folders
-fileSystem.deleteFiles(fileSystem.getFiles(temp), true);
-fileSystem.deleteFiles(fileSystem.getFiles(tmp), true);
-fileSystem.deleteFiles(fileSystem.getFiles(downloads), true);
-
 // empty Obsidian trash
 fileSystem.deleteFiles(fileSystem.getFiles(obsidianTrashFolder), true);
 
-// delete ShareX cruft
-fileSystem.deleteFiles(fileSystem.getFiles(shareXCache), true);
-fileSystem.deleteFiles(fileSystem.getFiles(shareXLogs), true);
-fileSystem.deleteFiles(fileSystem.getFiles(shareXBackup), true);
+if (isWin) {
+    // kill temp folders
+    fileSystem.deleteFiles(fileSystem.getFiles(temp), true);
+    fileSystem.deleteFiles(fileSystem.getFiles(tmp), true);
+    fileSystem.deleteFiles(fileSystem.getFiles(downloads), true);
+
+    // delete ShareX cruft
+    fileSystem.deleteFiles(fileSystem.getFiles(shareXCache), true);
+    fileSystem.deleteFiles(fileSystem.getFiles(shareXLogs), true);
+    fileSystem.deleteFiles(fileSystem.getFiles(shareXBackup), true);
+}
