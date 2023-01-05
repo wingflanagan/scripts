@@ -22,7 +22,7 @@ function getFilesOlderThan(fileList, olderThanDate) {
     // like Unix, the information about the file is obtained through stat
     var fileStat = fs.statSync(fileList[i]);
 
-    if (fileStat.isFile() && fileStat.birthtime < olderThanDate) {
+    if (fileStat.isFile() && fileStat.mtime < olderThanDate) {
       result.push(fileList[i]);
     }
   }

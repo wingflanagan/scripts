@@ -11,6 +11,9 @@ var path = require("path");
 var isWin = process.platform === "win32";
 var isLinux = process.platform === "linux";
 
+// We could probably get the OS-specific separator, but that would not fix some
+// of the path differences between my Windoze and Linx systems (like the temp 
+// folders and the spaces in the OneDrive folder name on Windoze).
 if (isWin) {
     // places to go and things to see - WINDOZE...
     var userFolder = "c:\\Users\\jflana";
@@ -46,13 +49,17 @@ var olderThanDate = new Date(currentYear, currentMonth, 1);
 // get the files in work log older than the start of this month and archive them
 var files = fileSystem.getFiles(workLogFolder);
 files = fileSystem.getFilesOlderThan(files, olderThanDate);
-var workfolderArchive = "work-log_" + currentYear + "_" + util.addLeadingZeros(currentMonth, 2) + ".zip";
+var archiveMonth = (currentMonth - 1 <= 0) ? 12 : (currentMonth - 1);
+var archiveYear = (archiveMonth == 12) ? (currentYear - 1) : currentYear;
+var archiveFileSuffix = archiveYear + "_" + util.addLeadingZeros(archiveMonth, 2) +  ".zip";
+var workfolderArchive = "work-log_" + archiveFileSuffix;
 workfolderArchive = path.join(archiveFolder, workfolderArchive);
 fileSystem.archiveFiles(workfolderArchive, files);
 
 // get the files in work attachments older than the start of this month and archive them
-var files = fileSystem.getFilesOlderThan(fileSystem.getFiles(workAttachmentsFolder), olderThanDate);
-var workAttachmentFolderArchive = "work-att_" + currentYear + "_" + util.addLeadingZeros(currentMonth, 2) + ".zip";
+var files = fileSystem.getFiles(workAttachmentsFolder);
+files = fileSystem.getFilesOlderThan(files, olderThanDate);
+var workAttachmentFolderArchive = "work-att_" + archiveFileSuffix;
 workAttachmentFolderArchive = path.join(archiveFolder, workAttachmentFolderArchive);
 fileSystem.archiveFiles(workAttachmentFolderArchive, files);
 
@@ -70,3 +77,4 @@ if (isWin) {
     fileSystem.deleteFiles(fileSystem.getFiles(shareXLogs), true);
     fileSystem.deleteFiles(fileSystem.getFiles(shareXBackup), true);
 }
+
