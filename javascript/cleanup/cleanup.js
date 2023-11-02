@@ -17,7 +17,7 @@ var isLinux = process.platform === "linux";
 if (isWin) {
     // places to go and things to see - WINDOZE...
     var userFolder = "c:\\Users\\jflana";
-    var oneDriveFolder = path.join(userFolder, "\\OneDrive - UW");
+    var oneDriveFolder = path.join(userFolder, "\\OneDrive");
     var workLogFolder = path.join(oneDriveFolder, "\\work-log\\");
     var archiveFolder = path.join(workLogFolder, "archive\\");
     var obsidianTrashFolder = path.join(workLogFolder, "\\.trash");
@@ -31,8 +31,8 @@ if (isWin) {
     var tmp = process.env["TMP"];
 } else if (isLinux) {
     // Linux...
-    var userFolder = "/home/jflana";
-    var oneDriveFolder = path.join(userFolder, "/OneDriveUW");
+    var userFolder = "/home/wingf";
+    var oneDriveFolder = path.join(userFolder, "/OneDrive");
     var workLogFolder = path.join(oneDriveFolder, "/work-log");
     var archiveFolder = path.join(workLogFolder, "/archive");
     var obsidianTrashFolder = path.join(workLogFolder, "/.trash");
