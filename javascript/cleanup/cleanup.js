@@ -16,8 +16,8 @@ var isLinux = process.platform === "linux";
 // folders and the spaces in the OneDrive folder name on Windoze).
 if (isWin) {
     // places to go and things to see - WINDOZE...
-    var userFolder = "c:\\Users\\jflana";
-    var oneDriveFolder = path.join(userFolder, "\\OneDrive");
+    var userFolder = "c:\\Users\\John Flanagan";
+    var oneDriveFolder = path.join(userFolder, "\\OneDrive - UW");
     var workLogFolder = path.join(oneDriveFolder, "\\work-log\\");
     var archiveFolder = path.join(workLogFolder, "archive\\");
     var obsidianTrashFolder = path.join(workLogFolder, "\\.trash");
