@@ -1,0 +1,3 @@
+Error renaming sample files in /samples/temp/vsl-extracted/oboe/03-OB_oV_DYNAMIC-MEDIUM/samples: 'utf-8' codec can't encode character '\udcb4' in position 20: surrogates not allowed
+Error renaming sample files in /samples/temp/vsl-extracted/flute_2/03-FL2_oV_DYNAMIC-MEDIUM/samples: 'utf-8' codec can't encode character '\udcb4' in position 21: surrogates not allowed
+Error renaming sample files in /samples/temp/vsl-extracted/clarinet_Bb/03-KLB_DYNAMIC-LIGHT/samples: 'utf-8' codec can't encode character '\udcb4' in position 21: surrogates not allowed

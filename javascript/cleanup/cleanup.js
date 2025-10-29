@@ -32,7 +32,7 @@ if (isWin) {
 } else if (isLinux) {
     // Linux...
     var userFolder = "/home/wingf";
-    var oneDriveFolder = path.join(userFolder, "/OneDrive");
+    var oneDriveFolder = path.join(userFolder, "/OneDrive-UW");
     var workLogFolder = path.join(oneDriveFolder, "/work-log");
     var archiveFolder = path.join(workLogFolder, "/archive");
     var obsidianTrashFolder = path.join(workLogFolder, "/.trash");
