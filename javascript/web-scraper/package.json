@@ -1,0 +1,24 @@
+{
+  "name": "website-to-markdown",
+  "version": "1.0.0",
+  "description": "A robust tool to download websites and convert them to Markdown.",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "keywords": [
+    "scraper",
+    "markdown",
+    "puppeteer",
+    "archiver"
+  ],
+  "author": "Technical Analyst",
+  "license": "MIT",
+  "dependencies": {
+    "p-limit": "^4.0.0",
+    "puppeteer": "^22.10.0",
+    "turndown": "^7.1.3",
+    "turndown-plugin-gfm": "^1.0.2"
+  }
+}
