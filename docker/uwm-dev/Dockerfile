@@ -26,13 +26,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
 # Twin (local .deb)
-COPY twin_0.9.1-2_amd64.deb /tmp/twin_0.9.1-2_amd64.deb
+COPY ntwin_0.9.1-neo.2-7_amd64.deb /tmp/ntwin_0.9.1-neo.2-7_amd64.deb
 RUN set -eux; \
-    dpkg -i /tmp/twin_0.9.1-2_amd64.deb || true; \
+    dpkg -i /tmp/ntwin_0.9.1-neo.2-7_amd64.deb || true; \
     apt-get update; \
     apt-get install -y --no-install-recommends -f; \
     rm -rf /var/lib/apt/lists/*; \
-    rm -f /tmp/twin_0.9.1-2_amd64.deb
+    rm -f /tmp/ntwin_0.9.1-neo.2-7_amd64.deb
 
 # Proper stop signal for systemd in containers
 STOPSIGNAL SIGRTMIN+3
