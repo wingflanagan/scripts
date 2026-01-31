@@ -1,0 +1,90 @@
+<Configuration>
+  <!--
+    Office Deployment Tool config.
+
+    Goal (your current ask):
+      - Install Microsoft 365 Apps for enterprise (Click-to-Run)
+      - Win64
+      - Only Outlook
+      - Licensing deferred to "user signs in" (standard for M365 Apps)
+
+    Notes:
+      - Teams is NOT something I recommend trying to "include" via ODT anymore.
+        Microsoft’s guidance is mostly about excluding it and deploying it separately.
+  -->
+
+  <Add OfficeClientEdition="64" Channel="MonthlyEnterprise">
+    <!--
+      Product ID choices (most common):
+        - O365ProPlusRetail  = Microsoft 365 Apps for enterprise (business/enterprise "full" suite)
+        - O365BusinessRetail = Microsoft 365 Apps for business (SMB)
+
+      Use the one that matches your tenant/subscription.
+      Microsoft lists these product IDs for ODT Click-to-Run.
+    -->
+    <Product ID="O365ProPlusRetail">
+      <Language ID="en-us" />
+
+      <!--
+        Exclude everything EXCEPT Outlook.
+        Leave Outlook un-excluded so it installs.
+
+        Common ExcludeApp IDs:
+          Access, Excel, Groove (OneDrive for Business), Lync (Skype for Business),
+          OneDrive, OneNote, PowerPoint, Publisher, Teams, Word
+
+        (The canonical behavior is: you install the suite, then EXCLUDE what you don't want.)
+      -->
+      <ExcludeApp ID="Access" />
+      <ExcludeApp ID="Excel" />
+      <ExcludeApp ID="Groove" />
+      <ExcludeApp ID="Lync" />
+      <ExcludeApp ID="OneDrive" />
+      <ExcludeApp ID="OneNote" />
+      <ExcludeApp ID="PowerPoint" />
+      <ExcludeApp ID="Publisher" />
+      <ExcludeApp ID="Word" />
+
+      <!--
+        Teams:
+          Historically bundled, now increasingly treated as separate.
+          You can *try* excluding it here to prevent surprise installs.
+      -->
+      <ExcludeApp ID="Teams" />
+
+      <!--
+        Outlook:
+          Do NOT exclude Outlook. If you put <ExcludeApp ID="Outlook" />, you won't get Outlook.
+      -->
+      <!-- <ExcludeApp ID="Outlook" /> -->
+    </Product>
+
+    <!--
+      OPTIONAL add-ons (these require being explicitly added as separate products):
+        Visio:   <Product ID="VisioProRetail">...</Product>
+        Project: <Product ID="ProjectProRetail">...</Product>
+      Microsoft documents these product IDs.
+    -->
+    <!--
+    <Product ID="VisioProRetail">
+      <Language ID="en-us" />
+    </Product>
+    -->
+    <!--
+    <Product ID="ProjectProRetail">
+      <Language ID="en-us" />
+    </Product>
+    -->
+
+  </Add>
+
+  <!-- Quiet install UI; change Level to "Full" if you want the UI -->
+  <Display Level="None" AcceptEULA="TRUE" />
+
+  <!-- Enable updates. If your org manages updates elsewhere, flip this. -->
+  <Updates Enabled="TRUE" />
+
+  <!-- Optional: remove MSI-based remnants if any ancient Office is installed -->
+  <RemoveMSI />
+
+</Configuration>
